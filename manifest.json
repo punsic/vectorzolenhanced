@@ -1,0 +1,15 @@
+{
+    "display_name": "Chat History Super Manager",
+    "loading_order": 5000,
+    "requires": [],
+    "optional": [
+        "embeddings"
+    ],
+    "generate_interceptor": "vectors_rearrangeChat",
+    "js": "index.js",
+    "css": "style.css",
+    "author": "RaphllA",
+    "version": "1.0.2",
+    "homePage": "https://github.com/RaphllA/vectors-enhanced",
+    "description": "Enhanced vector storage plugin with support for multi-task management, custom content tags, hidden message management, and more. Allows bulk hiding/showing of message ranges and option to include hidden messages in vectorization."
+}

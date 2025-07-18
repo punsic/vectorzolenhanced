@@ -1,0 +1,372 @@
+<div id="vectors_enhanced_container" class="inline-drawer">
+    <div class="inline-drawer-toggle inline-drawer-header">
+        <b>Chat History Super Manager</b>
+        <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+    </div>
+    <div class="inline-drawer-content">
+            <!-- Master Switch -->
+            <div class="vectors-enhanced-section" style="padding-bottom: 0.5rem; border-bottom: 2px solid var(--SmartThemeQuoteColor);">
+                <label class="checkbox_label" for="vectors_master_enabled" title="Enable/disable all functions of this plugin. When disabled, all vectorization and query functions will stop working.">
+                    <input id="vectors_enhanced_master_enabled" type="checkbox" />
+                    <span style="font-weight: bold; color: var(--SmartThemeQuoteColor);">Enable Chat History Super Manager</span>
+                </label>
+                <small style="display: block; margin-top: 0.25rem; color: var(--SmartThemeEmColor);">
+                    Turning this off will disable all plugin features, including vectorization, querying, and task management.
+                </small>
+            </div>
+            
+            <!-- Vectorization Settings -->
+            <div id="vectors_enhanced_main_settings" class="vectors-enhanced-section">
+                <h3>Vectorization Settings</h3>
+                
+                <!-- Enable Vector Query -->
+                <label class="checkbox_label" for="vectors_enabled" title="Enable/disable vector query function (vectorized content will not be affected)">
+                    <input id="vectors_enhanced_enabled" type="checkbox" />
+                    <span>Enable Vector Query</span>
+                </label>
+                
+                <div class="flex-container flexFlowColumn m-t-0-5">
+                    <label for="vectors_source">
+                        Vectorization Source
+                    </label>
+                    <select id="vectors_enhanced_source" class="text_pole">
+                        <option value="transformers">Local (Transformers)</option>
+                        <option value="vllm">vLLM</option>
+                        <option value="ollama">Ollama</option>
+                    </select>
+                </div>
+
+                <!-- vLLM Settings -->
+                <div id="vectors_enhanced_vllm_settings" class="flex-container flexFlowColumn" style="display: none;">
+                    <label for="vectors_vllm_model">
+                        Model Name
+                    </label>
+                    <input id="vectors_enhanced_vllm_model" class="text_pole" type="text" placeholder="e.g., intfloat/e5-mistral-7b-instruct" />
+                    
+                    <label for="vectors_vllm_url">
+                        API URL (Optional)
+                    </label>
+                    <input id="vectors_enhanced_vllm_url" class="text_pole" type="text" placeholder="Leave blank to use default vLLM settings" />
+                    <small>
+                        If not set, the URL from the API connection settings will be used.
+                    </small>
+                </div>
+
+                <!-- Local Settings -->
+                <div id="vectors_enhanced_local_settings" class="flex-container flexFlowColumn">
+                    <label for="vectors_local_model">
+                        Model Name (Optional)
+                    </label>
+                    <input id="vectors_enhanced_local_model" class="text_pole" type="text" placeholder="e.g., Cohee/jina-embeddings-v2-base-en" />
+                    <small>
+                        Leave blank to use the default embedding model configured on the SillyTavern API page.
+                    </small>
+                </div>
+
+                <!-- Ollama Settings -->
+                <div id="vectors_enhanced_ollama_settings" class="flex-container flexFlowColumn" style="display: none;">
+                    <label for="vectors_ollama_model">
+                        Model Name
+                    </label>
+                    <input id="vectors_enhanced_ollama_model" class="text_pole" type="text" placeholder="e.g., nomic-embed-text" />
+                    
+                    <label for="vectors_ollama_url">
+                        API URL (Optional)
+                    </label>
+                    <input id="vectors_enhanced_ollama_url" class="text_pole" type="text" placeholder="http://localhost:11434" />
+                    <small>
+                        Leave blank to use the default address http://localhost:11434. Please ensure the Ollama service is running.
+                    </small>
+                </div>
+
+                <hr>
+
+                <!-- General Settings -->
+                <div class="flex-container">
+                    <div class="flex1" title="Size of text chunks for vectorization">
+                        <label for="vectors_chunk_size">
+                            <small>Chunk Size</small>
+                        </label>
+                        <input id="vectors_enhanced_chunk_size" type="number" class="text_pole" min="100" max="10000" />
+                    </div>
+                    <div class="flex1" title="Overlap percentage between chunks">
+                        <label for="vectors_overlap_percent">
+                            <small>Overlap %</small>
+                        </label>
+                        <input id="vectors_enhanced_overlap_percent" type="number" class="text_pole" min="0" max="50" />
+                    </div>
+                    <div class="flex1" title="Minimum similarity score for retrieval">
+                        <label for="vectors_score_threshold">
+                            <small>Score Threshold</small>
+                        </label>
+                        <input id="vectors_enhanced_score_threshold" type="number" class="text_pole" min="0" max="1" step="0.05" />
+                    </div>
+                </div>
+
+                <div class="flex-container flexFlowColumn">
+                    <label for="vectors_force_chunk_delimiter" title="Custom delimiter for chunk boundaries">
+                        <small>Custom Chunk Delimiter</small>
+                    </label>
+                    <input id="vectors_enhanced_force_chunk_delimiter" class="text_pole" type="text" placeholder="(Optional)" />
+                </div>
+
+                <!-- Query Settings -->
+                <div class="flex-container m-t-0-5">
+                    <div class="flex1" title="Number of recent messages to use for query">
+                        <label for="vectors_query_messages">
+                            <small>Query Messages</small>
+                        </label>
+                        <input id="vectors_enhanced_query_messages" type="number" class="text_pole" min="1" max="20" />
+                    </div>
+                    <div class="flex1" title="Maximum number of relevant chunks to return (still limited by score threshold)">
+                        <label for="vectors_max_results">
+                            <small>Max Results</small>
+                        </label>
+                        <input id="vectors_enhanced_max_results" type="number" class="text_pole" min="1" max="100" />
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Injection Settings -->
+                <h4>Injection Settings</h4>
+                
+                <div class="flex-container flexFlowColumn">
+                    <label for="vectors_template">
+                        Injection Template
+                    </label>
+                    <textarea id="vectors_enhanced_template" class="text_pole textarea_compact" rows="3" placeholder="Use {{text}} to specify the position of retrieved content"></textarea>
+                </div>
+
+                <!-- Content Tag Settings -->
+                <div class="flex-container flexFlowColumn m-t-0-5">
+                    <label>
+                        <small>Content Tags (to differentiate content from different sources)</small>
+                    </label>
+                    <div class="flex-container">
+                        <div class="flex1">
+                            <label for="vectors_tag_chat">
+                                <small>Chat History</small>
+                            </label>
+                            <input id="vectors_enhanced_tag_chat" class="text_pole" type="text" placeholder="past_chat" />
+                        </div>
+                        <div class="flex1">
+                            <label for="vectors_tag_wi">
+                                <small>World Info</small>
+                            </label>
+                            <input id="vectors_enhanced_tag_wi" class="text_pole" type="text" placeholder="world_part" />
+                        </div>
+                        <div class="flex1">
+                            <label for="vectors_tag_file">
+                                <small>Files</small>
+                            </label>
+                            <input id="vectors_enhanced_tag_file" class="text_pole" type="text" placeholder="databank" />
+                        </div>
+                    </div>
+                </div>
+
+                <label>Injection Position</label>
+                <div class="radio_group">
+                    <label>
+                        <input type="radio" name="vectors_position" value="2" />
+                        <span>Before Main Prompt</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="vectors_position" value="0" />
+                        <span>After Main Prompt</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="vectors_position" value="1" />
+                        <span>In-chat @ Depth</span>
+                        <input id="vectors_enhanced_depth" class="text_pole widthUnset" type="number" min="0" max="999" style="width: 60px;" />
+                        <span>as</span>
+                        <select id="vectors_enhanced_depth_role" class="text_pole widthNatural">
+                            <option value="0">System</option>
+                            <option value="1">User</option>
+                            <option value="2">Assistant</option>
+                        </select>
+                    </label>
+                </div>
+
+                <label class="checkbox_label" for="vectors_include_wi">
+                    <input id="vectors_enhanced_include_wi" type="checkbox" />
+                    <span>Include in World Info scan</span>
+                </label>
+
+                <label class="checkbox_label" for="vectors_auto_vectorize" title="Automatically re-vectorize selected content when chat content changes (e.g., sending/receiving messages, editing messages). Turning this off requires manually clicking the 'Vectorize' button.">
+                    <input id="vectors_enhanced_auto_vectorize" type="checkbox" />
+                    <span>Auto-vectorize on change</span>
+                </label>
+            </div>
+
+            <hr class="m-t-1 m-b-1">
+
+            <!-- Content Selection -->
+            <div id="vectors_enhanced_content_settings" class="vectors-enhanced-section">
+                <h3>Content Selection</h3>
+                
+                <!-- Chat Messages -->
+                <div class="content-type-section">
+                    <label class="checkbox_label" for="vectors_chat_enabled">
+                        <input id="vectors_enhanced_chat_enabled" type="checkbox" />
+                        <span>Chat Messages</span>
+                    </label>
+                    
+                    <div id="vectors_enhanced_chat_settings" class="content-settings" style="display: none;">
+                        <div class="flex-container">
+                            <div class="flex1">
+                                <label for="vectors_chat_start">
+                                    <small>From message #</small>
+                                </label>
+                                <input id="vectors_enhanced_chat_start" type="number" class="text_pole" min="0" value="0" />
+                            </div>
+                            <div class="flex1">
+                                <label for="vectors_chat_end">
+                                    <small>To message # (-1 for last)</small>
+                                </label>
+                                <input id="vectors_enhanced_chat_end" type="number" class="text_pole" value="-1" />
+                            </div>
+                        </div>
+                        
+                        <div class="flex-container flexFlowColumn m-t-0-5">
+                            <label>
+                                <small>Message Types</small>
+                            </label>
+                            <label class="checkbox_label">
+                                <input id="vectors_enhanced_chat_user" type="checkbox" checked />
+                                <span>User Messages</span>
+                            </label>
+                            <label class="checkbox_label">
+                                <input id="vectors_enhanced_chat_assistant" type="checkbox" checked />
+                                <span>AI Messages</span>
+                            </label>
+                        </div>
+
+                        <div class="flex-container flexFlowColumn m-t-0-5">
+                            <label for="vectors_chat_tags">
+                                <small>Tag Extraction (leave blank to extract all content)</small>
+                            </label>
+                            <input id="vectors_enhanced_chat_tags" class="text_pole" type="text" placeholder="e.g., context,think (comma-separated)" />
+                            <small class="margin-bottom-10px">
+                                Only extracts content within specified tags, like &lt;context&gt;...&lt;/context&gt;
+                            </small>
+                        </div>
+
+                        <!-- New Feature: Hidden Message Management -->
+                        <div class="flex-container flexFlowColumn m-t-1" style="border-top: 1px dashed var(--SmartThemeQuoteColor); padding-top: 0.5rem;">
+                            <label>
+                                <small><strong>Hidden Message Management</strong></small>
+                            </label>
+                            
+                            <!-- Include Hidden Messages Option -->
+                            <label class="checkbox_label">
+                                <input id="vectors_enhanced_include_hidden" type="checkbox" />
+                                <span>Include Hidden Messages</span>
+                            </label>
+                            <small class="text-muted margin-bottom-10px">
+                                If checked, hidden messages will also be included in vectorization.
+                            </small>
+                            
+                            <!-- Hide/Show Buttons -->
+                            <div class="flex-container m-t-0-5">
+                                <button id="vectors_enhanced_hide_range" class="menu_button menu_button_icon" title="Hide messages in the selected range">
+                                    <i class="fa-solid fa-eye-slash"></i>
+                                    <span>Hide Messages</span>
+                                </button>
+                                <button id="vectors_enhanced_unhide_range" class="menu_button menu_button_icon" title="Show messages in the selected range">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span>Show Messages</span>
+                                </button>
+                                <button id="vectors_enhanced_show_hidden" class="menu_button menu_button_icon" title="View currently hidden messages">
+                                    <i class="fa-solid fa-list"></i>
+                                    <span>View Hidden</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="m-t-0-5 m-b-0-5">
+
+                <!-- Files -->
+                <div class="content-type-section">
+                    <label class="checkbox_label" for="vectors_files_enabled">
+                        <input id="vectors_enhanced_files_enabled" type="checkbox" />
+                        <span>Files</span>
+                    </label>
+                    
+                    <div id="vectors_enhanced_files_settings" class="content-settings" style="display: none;">
+                        <div id="vectors_enhanced_files_list" class="file-list">
+                            <!-- File list will be populated dynamically -->
+                        </div>
+                        <button id="vectors_enhanced_files_refresh" class="menu_button">
+                            <i class="fa-solid fa-refresh"></i>
+                            <span>Refresh File List</span>
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="m-t-0-5 m-b-0-5">
+
+                <!-- World Info -->
+                <div class="content-type-section">
+                    <label class="checkbox_label" for="vectors_wi_enabled">
+                        <input id="vectors_enhanced_wi_enabled" type="checkbox" />
+                        <span>World Info</span>
+                    </label>
+                    
+                    <div id="vectors_enhanced_wi_settings" class="content-settings" style="display: none;">
+                        <div id="vectors_enhanced_wi_list" class="wi-list">
+                            <!-- World Info entries will be populated dynamically -->
+                        </div>
+                        <button id="vectors_enhanced_wi_refresh" class="menu_button">
+                            <i class="fa-solid fa-refresh"></i>
+                            <span>Refresh World Info</span>
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="m-t-1 m-b-1">
+
+                <!-- Vectorization Task List -->
+                <div id="vectors_enhanced_tasks_settings" class="vectors-enhanced-section">
+                    <h3>Vectorization Tasks</h3>
+                    <div id="vectors_enhanced_task_list" class="task-list">
+                        <!-- Task list will be populated dynamically -->
+                    </div>
+                </div>
+
+                <hr class="m-t-1 m-b-1">
+
+                <!-- Action Buttons -->
+                <div id="vectors_enhanced_actions_settings" class="vectors-enhanced-section">
+                    <div class="vectors-enhanced-actions flex-container">
+                        <button id="vectors_enhanced_preview" class="menu_button menu_button_icon">
+                            <i class="fa-solid fa-eye"></i>
+                            <span>Preview</span>
+                        </button>
+                        <button id="vectors_enhanced_export" class="menu_button menu_button_icon">
+                            <i class="fa-solid fa-download"></i>
+                            <span>Export</span>
+                        </button>
+                        <button id="vectors_enhanced_vectorize" class="menu_button menu_button_icon">
+                            <i class="fa-solid fa-vector-square"></i>
+                            <span>Vectorize</span>
+                        </button>
+                    </div>
+
+                    <div id="vectors_enhanced_progress" class="vectors-enhanced-progress m-t-1" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">Preparing...</div>
+                    </div>
+
+                    <div id="vectors_enhanced_status" class="vectors-enhanced-status m-t-1" style="display: none;">
+                        <!-- Status messages will be displayed here -->
+                    </div>
+                    
+                </div>
+        </div>
+    </div>
+</div>
